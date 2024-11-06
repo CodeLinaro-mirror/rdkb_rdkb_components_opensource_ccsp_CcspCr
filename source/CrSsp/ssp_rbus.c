@@ -320,8 +320,8 @@ static int crData_LoadRegistry(crData_t cr)
 {
     int rc = 0;
     xmlDocPtr doc = NULL;
-    xmlNodePtr root, comps, comp, depend, field;
-    xmlChar* name,* version,* Event,* dep;
+    xmlNodePtr root = NULL, comps = NULL, comp = NULL, depend = NULL, field = NULL;
+    xmlChar* name = NULL, * version = NULL, * Event = NULL, * dep = NULL;
     const char* fileName = NULL;
 
     if(access(CCSP_ETHWAN_ENABLE, F_OK) == 0)
@@ -378,6 +378,11 @@ static int crData_LoadRegistry(crData_t cr)
                                                 rtVector_PushBack(pCompDep->compRegistry, dep_name);
 
                                                 CRLOG_WARN("adding component %s to dependency component registry", dep_name);
+                                                if(dep)
+                                                {
+                                                    xmlFree(dep);
+                                                    dep = NULL;
+                                                }
                                             }
                                         }
                                     }
@@ -416,8 +421,6 @@ static int crData_LoadRegistry(crData_t cr)
                                 xmlFree(name);
                             if(version)
                                 xmlFree(version);
-                            if(dep)
-                                xmlFree(dep);
                             if(Event)
                                 xmlFree(Event);
 
