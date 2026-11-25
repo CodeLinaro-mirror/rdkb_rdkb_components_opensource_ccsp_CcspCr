@@ -181,9 +181,9 @@ bool isCompNameRegistered(const char* componentName)
     ComponentRegistration_t* reg = rtVector_Find(g_crData->registry, componentName, componentRegistrationCompare);
     if(reg)
     {
-        pthread_mutex_lock(&g_crData->readyMutex);
+        (void)pthread_mutex_lock(&g_crData->readyMutex);
         registered = reg->registered;
-        pthread_mutex_unlock(&g_crData->readyMutex);
+        (void)pthread_mutex_unlock(&g_crData->readyMutex);
         if(registered)
         {
             CRLOG_WARN("Component Name: %s found in registry", componentName);
