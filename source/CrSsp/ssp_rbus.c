@@ -177,19 +177,21 @@ static int crData_Create(crData_t* cr)
 
 bool isCompNameRegistered(const char* componentName)
 {
+    int rc = 0;
     int registered = 0;
     ComponentRegistration_t* reg = rtVector_Find(g_crData->registry, componentName, componentRegistrationCompare);
     if(reg)
     {
-        (void)pthread_mutex_lock(&g_crData->readyMutex);
+        ERROR_CHECK(pthread_mutex_lock(&g_crData->readyMutex));
         registered = reg->registered;
-        (void)pthread_mutex_unlock(&g_crData->readyMutex);
+        ERROR_CHECK(pthread_mutex_unlock(&g_crData->readyMutex));
         if(registered)
         {
             CRLOG_WARN("Component Name: %s found in registry", componentName);
             return true;
         }
     }
+    (void)rc;
     return false;
 }
 
